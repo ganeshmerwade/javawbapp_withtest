@@ -16,7 +16,7 @@ pipeline {
         stage('build') {
             steps{
                 sh '''
-                    mvn -b -DskipTests clean install
+                    mvn -B -DskipTests clean install
                 '''
             }
         }
