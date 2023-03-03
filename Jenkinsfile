@@ -37,6 +37,7 @@ pipeline {
         stage('deploy') {
             steps{
                 sh '''
+                    cd target
                     scp -v -o StrictHostKeyChecking=no *.war ubuntu@172.31.12.87:/var/lib/tomcat9/webapps
                 '''
             }
