@@ -2,10 +2,13 @@ pipeline {
     agent {
   label 'java'
     }
+    parameters {
+  choice choices: ['main', 'dev', 'staging', 'feature'], description: 'select branch', name: 'branch'
+}
     stages{
         stage('get code') {
             steps{
-                git branch: 'main', url: 'https://github.com/ganeshmerwade/Java-project-2.git'
+                git branch: "${params.branch}", credentialsId: 'github', url: 'https://github.com/ganeshmerwade/javawbapp_withtest.git'
             }
         }
 
@@ -13,7 +16,7 @@ pipeline {
         stage('build') {
             steps{
                 sh '''
-                    mvn clean install
+                    mvn -b -DskipTests clean install
                 '''
             }
         }
@@ -24,5 +27,13 @@ pipeline {
               }
             }  
 }
+        stage('test') {
+            steps{
+                sh '''
+                    mvn clean test
+                '''
+            }
+        }       
+
 }
 }
