@@ -26,7 +26,15 @@ pipeline {
                 sh 'mvn sonar:sonar'
               }
             }  
-}
+        }
+        stage('Quality Gate') {
+            steps {
+              timeout(time: 15, unit: 'MINUTES') {
+                waitForQualityGate abortPipeline: true
+                }
+            }
+        }
+        
         stage('test') {
             steps{
                 sh '''
@@ -42,5 +50,5 @@ pipeline {
                 '''
             }
         }
-}
+    }
 }
